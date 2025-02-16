@@ -1,0 +1,136 @@
+/* ----------------------- */
+/* CropRecommendation Page */
+/* ----------------------- */
+
+/* Scoped with .crop-recommendation-page */
+.crop-recommendation-page {
+    --crop-bg-image: url('../images/treeimage.png');
+    --crop-bg-color: rgba(255, 255, 255, 0.9);
+    --crop-primary-color: #68b079;
+    --crop-hover-color: #6dc780;
+    --crop-text-color: #333;
+    --crop-title-color: #2f4f4f;
+    --crop-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    --crop-border-color: #ccc;
+
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: var(--crop-bg-image) no-repeat center center fixed;
+    background-size: cover;
+    margin: 0;
+    padding: 0;
+}
+
+/* Container */
+.crop-container {
+    width: 90%;
+    max-width: 500px;
+    background: var(--crop-bg-color);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: var(--crop-shadow);
+    text-align: center;
+}
+
+/* Heading */
+.crop-title {
+    font-size: 26px;
+    color: var(--crop-title-color);
+    margin-bottom: 20px;
+}
+
+/* Form styling */
+.crop-form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* Input styling */
+.crop-input-group input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid var(--crop-border-color);
+    border-radius: 5px;
+    font-size: 16px;
+    box-sizing: border-box;
+}
+
+/* Button styles */
+.crop-btn {
+    background-color: var(--crop-primary-color);
+    color: white;
+    padding: 12px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 15px;
+    transition: background-color 0.3s;
+}
+
+.crop-btn:hover {
+    background-color: var(--crop-hover-color);
+}
+
+/* Status message */
+.crop-status {
+    font-size: 18px;
+    color: var(--crop-text-color);
+    margin-top: 15px;
+    margin-bottom: 20px;
+    font-weight: 500;
+}
+
+/* Crop recommendations */
+.crop-result-title {
+    font-size: 22px;
+    color: var(--crop-title-color);
+    margin-top: 25px;
+}
+
+.crop-list {
+    list-style-type: none;
+    padding: 0;
+    margin-top: 15px;
+}
+
+.crop-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #e6f7e6;
+    padding: 12px;
+    margin: 5px 0;
+    border-radius: 5px;
+    border: 1px solid #d4edda;
+    transition: background-color 0.3s;
+}
+
+.crop-item:hover {
+    background-color: #d1f5d3;
+}
+
+.crop-label {
+    font-size: 18px;
+    color: var(--crop-text-color);
+}
+
+/* Checkbox styling */
+.crop-item input[type="checkbox"] {
+    transform: scale(1.4);
+    margin-right: 12px;
+    cursor: pointer;
+}
+
+/* Save button */
+.crop-btn.save-btn {
+    margin-top: 20px;
+    background-color: #217345;
+}
+
+.crop-btn.save-btn:hover {
+    background-color: #1c5c3a;
+}

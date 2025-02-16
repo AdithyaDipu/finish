@@ -1,0 +1,5 @@
+* text=auto
+*.json text eol=lf
+*.md text eol=lf
+backend/package-lock.json text eol=lf
+backend/package.json text eol=lf

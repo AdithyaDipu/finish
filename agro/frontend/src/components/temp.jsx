@@ -45,11 +45,10 @@ function CropRecommendation({ weatherData }) {
     }
   }, [weatherData]);
 
-  // Fetch NPK values from the IoT API
   useEffect(() => {
     const fetchSoilData = async () => {
       try {
-        const response = await fetch('http://127.0.0.1:5001/api/soil-data'); // API from iot.py
+        const response = await fetch('http://127.0.0.1:5001/api/soil-data');
         const data = await response.json();
         setFormData((prevData) => ({
           ...prevData,
@@ -62,6 +61,15 @@ function CropRecommendation({ weatherData }) {
       }
     };
     fetchSoilData();
+  }, []);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setFormData((prevData) => ({
+        ...prevData,
+        Ph: (Math.random() * (6.5 - 6) + 6).toFixed(2)
+      }));
+    }, 4000);
   }, []);
 
   const handleChange = (e) => {
@@ -138,7 +146,7 @@ function CropRecommendation({ weatherData }) {
             <input type="number" name="Humidity" placeholder="Humidity (%)" value={formData.Humidity} onChange={handleChange} required />
             <input type="number" name="Ph" placeholder="pH Level" value={formData.Ph} onChange={handleChange} required />
             <input type="number" name="Rainfall" placeholder="Rainfall (mm)" value={formData.Rainfall} onChange={handleChange} required />
-            <select name="category" value={formData.category} onChange={handleChange} required>
+            <select name="category" value={formData.category} onChange={handleChange} required className="block w-full p-2 border border-gray-300 rounded mt-2">
               <option value="fruits">Fruits</option>
               <option value="vegetables">Vegetables</option>
               <option value="both">Both</option>

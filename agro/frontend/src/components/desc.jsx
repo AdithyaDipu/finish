@@ -73,10 +73,6 @@ function ProjectEntries() {
                     </div>
                     {selectedCrop === crop && (
                       <div className="mt-4 p-4 bg-white rounded-lg shadow-md">
-                        {/* Placeholder for Image */}
-                        <div className="w-full h-32 bg-green-100 rounded-lg flex items-center justify-center mb-4">
-                          <span className="text-gray-500 text-sm">[Add Crop Image Here]</span>
-                        </div>
                         {cropDetails ? (
                           <div>
                             <h3 className="text-xl font-bold text-green-800 mb-2">🌱 {cropDetails.name}</h3>

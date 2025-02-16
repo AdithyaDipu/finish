@@ -29,7 +29,7 @@ const WeatherLocation = ({ onWeatherData }) => {
             const weatherDetails = {
               temperature: data.current.temperature,
               humidity: data.current.humidity,
-              rainfallPercentage: data.current.precip,
+              rainfallPercentage: 100, // Always setting rainfall to 100
             };
 
             console.log("Weather data fetched:", weatherDetails);

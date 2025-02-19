@@ -1,0 +1,8 @@
+# .env file
+.env
+
+# pycache
+__pycache__/
+
+# celerybeat
+celerybeat*

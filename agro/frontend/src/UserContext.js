@@ -1,16 +1,19 @@
-import React, { createContext, useState } from 'react';
+import React, { createContext, useState, useEffect } from 'react';
 
 export const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
+  // Load user from localStorage if available
+  const [user, setUser] = useState(() => {
+    const savedUser = localStorage.getItem('user');
+    return savedUser ? JSON.parse(savedUser) : null;
+  });
 
   const login = (userData) => {
     console.log('User logged in:', userData); // Debugging log
 
-    // ✅ Ensure _id is stored instead of id
     const formattedUser = {
-      _id: userData._id, // Fix incorrect id naming issue
+      _id: userData._id, // Correct _id
       firstName: userData.firstName,
       lastName: userData.lastName,
       email: userData.email,
@@ -19,11 +22,22 @@ export const UserProvider = ({ children }) => {
     };
 
     setUser(formattedUser);
+    localStorage.setItem('user', JSON.stringify(formattedUser)); // Persist in localStorage
   };
 
   const logout = () => {
     setUser(null);
+    localStorage.removeItem('user'); // Clear from localStorage
   };
+
+  // Update localStorage when user state changes
+  useEffect(() => {
+    if (user) {
+      localStorage.setItem('user', JSON.stringify(user));
+    } else {
+      localStorage.removeItem('user');
+    }
+  }, [user]);
 
   return (
     <UserContext.Provider value={{ user, login, logout }}>

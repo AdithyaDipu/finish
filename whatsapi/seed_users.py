@@ -5,12 +5,12 @@ client = MongoClient('mongodb://localhost:27017/')
 
 # Access the 'whatsapi' database and the 'users' collection
 db = client['whatsapi']
-users_collection = db['caller']
+users_collection = db['users']
 
 # Sample user data
 users = [
-    {"name": "midhun", "id": 1, "phone": "+91954470913"},
-    {"name": "Bob", "id": 2, "phone": "+919497663540"},
+    {"name": "midhun", "id": 1, "phone": "+919544170913"},
+    {"name": "Bob", "id": 2, "phone": "+917736744800"},
     {"name": "sasi", "id": 3, "phone": "+919567124498"}
 ]
 

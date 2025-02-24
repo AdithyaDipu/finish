@@ -5,7 +5,7 @@ import socket
 app = Flask(__name__)
 CORS(app)
 
-ESP32_IP = "192.168.30.63"
+ESP32_IP = "192.168.183.63"
 ESP32_PORT = 5000
 
 soil_data = {

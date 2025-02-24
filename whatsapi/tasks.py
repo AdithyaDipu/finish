@@ -1,83 +1,48 @@
-import os
-import datetime
-import requests
-from pymongo import MongoClient
-from celery import Celery
-from celery.schedules import crontab
-from dotenv import load_dotenv
+import socket
+
+# ESP32 server IP and port
+ESP32_IP = "192.168.111.63"  # Replace with your ESP32 IP
+ESP32_PORT = 5000
+
+def request_sensor_data():
+    try:
+        # Create a socket connection
+        client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        client_socket.connect((ESP32_IP, ESP32_PORT))
+
+        # Send request to ESP32
+        client_socket.sendall(b"GET_DATA\n")
+
+        # Receive response
+        response = client_socket.recv(1024).decode('utf-8')
+        print("Received:", response)
+
+        # Split the response into an array
+        data_array = response.strip().split(", ")
+        print("Split Data Array:", data_array)
+
+        # Extract values
+        moisture = data_array[0].split(": ")[1]
+        temperature_str = data_array[1].split(": ")[1].replace("°C", "")
+        temperature = int(float(temperature_str))  # Convert to integer
+
+        npk_values_str = data_array[2].split(": ")[1]
+        npk_array = npk_values_str.replace("N=", "").replace("P=", "").replace("K=", "").split()
+        npk_array = [int(value) for value in npk_array]  # Convert to integers
+
+        print("Moisture:", moisture)
+        print("Temperature:", temperature)
+        print("NPK Array:", npk_array)
+
+        # Close connection
+        client_socket.close()
+
+    except Exception as e:
+        print("Error:", e)
 
 
-# Load environment variables
-load_dotenv()
-
-# Celery configuration
-app = Celery('tasks', broker='redis://localhost:6379/0')
-
-# MongoDB connection
-client = MongoClient('mongodb://localhost:27017/')
-db = client['whatsapi']
-users_collection = db['users']
-
-# WhatsApp Cloud API credentials
-WHATSAPP_TOKEN = os.getenv('WHATSAPP_TOKEN')
-WHATSAPP_PHONE_NUMBER_ID = os.getenv('WHATSAPP_PHONE_NUMBER_ID')
-WHATSAPP_API_URL = os.getenv('WHATSAPP_API_URL')
-
-# HTTP Headers for WhatsApp Cloud API
-HEADERS = {
-    "Authorization": f"Bearer {WHATSAPP_TOKEN}",
-    "Content-Type": "application/json"
-}
-
-@app.task
-def send_whatsapp_message(phone_number, name):
-    # Generate a custom message dynamically
-    #custom_message = f"Hello {name}, this is your scheduled message from our service!"
-    custom_message = name
-
-    print(f"📨 Sending message to: {name} ({phone_number})")
-
-    message_data = {
-        "messaging_product": "whatsapp",
-        "to": phone_number,
-        "type": "template",
-        "template": {
-            "name": "hello_world",
-            "language": {
-                "code": "en_US"
-            },
-            "components": [
-                {
-                    "type": "body",
-                    "parameters": []
-                }
-            ]
-        }
-    }
-
-    response = requests.post(WHATSAPP_API_URL, headers=HEADERS, json=message_data)
-
-    if response.status_code == 200:
-        print(f"✅ Message sent to {name} ({phone_number})")
-    else:
-        print(f"❌ Failed to send message to {name} ({phone_number}): {response.json()}")
-
-@app.on_after_configure.connect
-def setup_periodic_tasks(sender, **kwargs):
-    scheduled_hour = 2
-    scheduled_minute = 40
-    scheduled_time = f"{scheduled_hour:02}:{scheduled_minute:02}"
-    users = users_collection.find()
-    for user in users:
-        phone_number = user.get('phone')
-        name = user.get('name')
-
-        print(f"🕒 Scheduling send_whatsapp_message to {name} ({phone_number}) at {scheduled_time}")
-        
-        sender.add_periodic_task(
-            crontab(hour=scheduled_hour, minute=scheduled_minute),
-            send_whatsapp_message.s(phone_number, name),
-            name=f'send-message-to-{name}'
-        )
-
-app.conf.timezone = 'Asia/Kolkata'
+if __name__ == "__main__":
+    print("Press Enter to request sensor data from ESP32...")
+    while True:
+        input("Press Enter to get sensor data when the button is pressed...")
+        request_sensor_data()
